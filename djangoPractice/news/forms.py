@@ -19,7 +19,11 @@ class NewsForm(forms.ModelForm):
         if re.match(r'\d', title ):
             raise ValidationError('title haven`t to start from number')
         return title
-
+    def clean_is_published(self):
+        is_published=self.cleaned_data['is_published']
+        if not is_published :
+            raise ValidationError('you must accepted published param')
+        return is_published
 
 
 
