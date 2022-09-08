@@ -1,0 +1,30 @@
+#header{
+    background : #880e4f;
+    color : #fff;
+}
+
+.module h2, .module caption, .inline-group h2{
+    background: #880e4f;
+}
+
+#branding h1 a:link, #branding h1 a:visited {
+color : #fff;
+}
+
+h1{
+color : #fff
+}
+div.breadcrumbs{
+    background: #880e4f;
+}
+
+#nav-sidebar .current-app .section:link,
+#nav-sidebar .current-app .section:visited
+{
+    color:#fff
+
+}
+/*
+.content {
+background: #fce4ec;
+}*/
