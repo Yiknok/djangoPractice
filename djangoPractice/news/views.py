@@ -1,25 +1,28 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DeleteView,CreateView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DeleteView, CreateView
+from .utils import MyMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import NewsForm
 from .models import News, Category
 
 
-class HomeNews(ListView):
+class HomeNews(MyMixin, ListView):
     model = News
     template_name = 'news/class_index.html'
     context_object_name = 'news'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Home page'
+        context['title'] = self.get_upper('Home page')
         return context
 
     def get_queryset(self):
         return News.objects.filter(is_published=True).select_related('category')
 
 
-class CategoryNews(ListView):
+class CategoryNews(MyMixin, ListView):
     model = News
     template_name = 'news/class_category.html'
     context_object_name = 'news'
@@ -27,7 +30,7 @@ class CategoryNews(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = Category.objects.get(pk=self.kwargs['category_id'])
+        context['title'] = self.get_upper(Category.objects.get(pk=self.kwargs['category_id']))
         return context
 
     def get_queryset(self):
@@ -40,10 +43,12 @@ class ViewNews(DeleteView):
     # template_name = 'news/news_confirm_delete.html'
     # pk_url_kwarg = 'news_id'
 
-class CreateNews(CreateView):
+
+class CreateNews(LoginRequiredMixin,CreateView):
     form_class = NewsForm
     template_name = 'news/add_news.html'
-
+    # success_url = reverse_lazy('home')
+    login_url ='/admin/'
 
 # def index(request):
 #     news = News.objects.all()
