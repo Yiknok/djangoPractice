@@ -3,10 +3,29 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView
 from .utils import MyMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 from .forms import NewsForm
 from .models import News, Category
 
+
+def register(request):
+    if request.method=='POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Register success')
+            return redirect('login')
+        else:
+            messages.error(request,'Register failed')
+    else :
+        form=UserCreationForm()
+    return render(request,'news/register.html',{'form':form})
+
+
+def login(request):
+    return render(request,'news/login.html')
 
 class HomeNews(MyMixin, ListView):
     model = News
@@ -28,8 +47,6 @@ class CategoryNews(MyMixin, ListView):
     template_name = 'news/class_category.html'
     context_object_name = 'news'
     allow_empty = False
-    paginate_by = 3
-
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,11 +64,11 @@ class ViewNews(DeleteView):
     # pk_url_kwarg = 'news_id'
 
 
-class CreateNews(LoginRequiredMixin,CreateView):
+class CreateNews(LoginRequiredMixin, CreateView):
     form_class = NewsForm
     template_name = 'news/add_news.html'
     # success_url = reverse_lazy('home')
-    login_url ='/admin/'
+    login_url = '/admin/'
 
 # def index(request):
 #     news = News.objects.all()
