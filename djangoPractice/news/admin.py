@@ -1,17 +1,28 @@
 from django.contrib import admin
+from django import forms
 from django.utils.safestring import mark_safe
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 from .models import News, Category
 
 
+class NewsAdminForm(forms.ModelForm):
+    content = forms.CharField(widget=CKEditorUploadingWidget())
+
+    class Meta:
+        model = News
+        fields = '__all__'
+
+
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'category', 'created_at', 'updated_at', 'is_published','get_photo')
+    form = NewsAdminForm
+    list_display = ('id', 'title', 'category', 'created_at', 'updated_at', 'is_published', 'get_photo')
     list_display_links = ('id', 'title')
     search_fields = ('title', 'content')
     list_editable = ('is_published',)
     list_filter = ('is_published', 'category')
-    fields = ('title','content', 'category', 'photo','get_photo', 'is_published','views','created_at', 'updated_at' )
-    readonly_fields = ('get_photo','views','created_at', 'updated_at')
+    fields = ('title', 'content', 'category', 'photo', 'get_photo', 'is_published', 'views', 'created_at', 'updated_at')
+    readonly_fields = ('get_photo', 'views', 'created_at', 'updated_at')
 
     def get_photo(self, obj):
         if obj.photo:

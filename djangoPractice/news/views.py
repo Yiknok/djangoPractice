@@ -82,7 +82,7 @@ class CategoryNews(MyMixin, ListView):
 class ViewNews(DeleteView):
     model = News
     context_object_name = 'news_item'
-    # template_name = 'news/news_confirm_delete.html'
+    template_name = 'news/view_news_class.html'
     # pk_url_kwarg = 'news_id'
 
 
