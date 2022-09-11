@@ -10,12 +10,19 @@ from .forms import NewsForm, UserRegisterForm, UserLoginForm
 from .models import News, Category
 
 
+# to register func
+# mail=send_mail('Confirm mail', 'You register at Yiknok site please confirm your email','for_smtptest@ukr.net',[form.cleaned_data['email']], fail_silently=False)
+#             if mail:
+#                 messages.success(request, 'Register success, confirm your email')
+#                 return redirect('home')
+#             else:
+#                 messages.error(request,'error sending message to email')
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            user=form.save()
-            login(request,user)
+            user = form.save()
+            login(request, user)
             messages.success(request, 'Register success')
             return redirect('home')
         else:
