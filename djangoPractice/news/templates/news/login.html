@@ -1,48 +1,20 @@
 {% extends 'base.html' %}
-{% block title%}login{%endblock%}
+{% block title%}Register {%endblock%}
 {%block sidebar%}
 {%include 'inc/_sidebar.html'%}
 {%endblock%}
 {%block content%}
-<h1>Login</h1>
-<form action="{%url 'add_news'%}" method="post">
+
+<h1>Register</h1>
+
+<form method="post">
+
     {%csrf_token%}
-{{form.non_field.errors}}
     {{form.as_p}}
-   <!--
-    <div class="form-group">
-        <label for="{{form.title.id_for_label}}">News title</label>
-        {{form.title}}
-        <div class="invalid-feedback">
-            {{form.title.errors }}
-        </div>
-    </div>
-    </div>
-
-    <div class="form-group">
-        <label for="{{form.content.id_for_label}}">News content</label>
-        {{form.content}}
-        <div class="invalid-feedback">
-            {{form.content.errors }}
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="{{form.is_published.id_for_label}}">News status</label>
-        {{form.is_published}}
-        <div class="invalid-feedback">
-            {{form.is_published.errors }}
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="{{form.category.id_for_label}}">News category</label>
-        {{form.category}}
-        <div class="invalid-feedback">
-            {{form.category.errors }}
-        </div>
-    </div>
--->
 
 
+
+    <button type="submit" class="btn btn-primary btn-block">Login</button>
 </form>
 {%endblock%}
 

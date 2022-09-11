@@ -4,29 +4,42 @@ from django.views.generic import ListView, DeleteView, CreateView
 from .utils import MyMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.contrib.auth import login, logout
 
-
-
-from .forms import NewsForm,UserRegisterForm
+from .forms import NewsForm, UserRegisterForm, UserLoginForm
 from .models import News, Category
 
 
 def register(request):
-    if request.method=='POST':
+    if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request,'Register success')
-            return redirect('login')
+            user=form.save()
+            login(request,user)
+            messages.success(request, 'Register success')
+            return redirect('home')
         else:
-            messages.error(request,'Register failed')
-    else :
-        form=UserRegisterForm()
-    return render(request,'news/register.html',{'form':form})
+            messages.error(request, 'Register failed')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'news/register.html', {'form': form})
 
 
-def login(request):
-    return render(request,'news/login.html')
+def user_login(request):
+    if request.method == 'POST':
+        form = UserLoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserLoginForm()
+    return render(request, 'news/login.html', {'form': form})
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
+
 
 class HomeNews(MyMixin, ListView):
     model = News
@@ -69,7 +82,7 @@ class CreateNews(LoginRequiredMixin, CreateView):
     form_class = NewsForm
     template_name = 'news/add_news.html'
     # success_url = reverse_lazy('home')
-    login_url = '/admin/'
+    # login_url = '/admin/'
 
 # def index(request):
 #     news = News.objects.all()
