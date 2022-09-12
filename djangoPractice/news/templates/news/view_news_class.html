@@ -22,8 +22,9 @@
         </div>
     </div>
     <div class="card-footer text-muted">
-        {{news_item.created_at | date:'Y-m-d H:i:s'}}
+        {{news_item.created_at | date:'Y-m-d H:i:s'}} |     <a href="{%url 'update_news' news_item.id%}">Update News</a>
     </div>
+
 </div>
 {%endblock%}
 

@@ -130,7 +130,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = ["127.0.0.1", ]
 
 EMAIL_HOST = 'smtp.ukr.net'
-EMAIL_PORT = 2525
+EMAIL_PORT = 465 #2525
 EMAIL_HOST_USER = 'for_smtptest@ukr.net'
 EMAIL_HOST_PASSWORD = 'Danya5757387'
 EMAIL_USE_TLS = False

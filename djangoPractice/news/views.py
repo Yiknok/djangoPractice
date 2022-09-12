@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView
@@ -6,25 +7,30 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.contrib.auth import login, logout
 
-from .forms import NewsForm, UserRegisterForm, UserLoginForm
+from .forms import NewsForm, UserRegisterForm, UserLoginForm, UpdateNewsForm
 from .models import News, Category
 
 
 # to register func
-# mail=send_mail('Confirm mail', 'You register at Yiknok site please confirm your email','for_smtptest@ukr.net',[form.cleaned_data['email']], fail_silently=False)
-#             if mail:
-#                 messages.success(request, 'Register success, confirm your email')
-#                 return redirect('home')
-#             else:
-#                 messages.error(request,'error sending message to email')
+
+
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
+            # to_mail = form.cleaned_data['email']
+            # mail = send_mail('Confirm mail', 'You register at Yiknok site please confirm your email','for_smtptest@ukr.net', [to_mail], fail_silently=False)
             messages.success(request, 'Register success')
+            # if mail:
+            #     messages.success(request, 'Register success, confirm your email')
+            #     return redirect('home')
+            # else:
+            #     messages.error(request, 'error sending message to email')
             return redirect('home')
+
+
         else:
             messages.error(request, 'Register failed')
     else:
@@ -47,6 +53,19 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+
+def update_news(request, news_id):
+    news = News.objects.get(pk=news_id)
+    if request.method == 'POST':
+        form = UpdateNewsForm(data=request.POST)
+        if form.is_valid():
+            news.content = form.cleaned_data['u_content']
+            news.save()
+            return redirect(news)
+    else:
+        form = UpdateNewsForm()
+    return render(request, 'news/update_news.html', {'form': form, 'news': news})
 
 
 class HomeNews(MyMixin, ListView):

@@ -1,10 +1,15 @@
 from django import forms
 from .models import News
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
+
 import re
+
+
+class UpdateNewsForm(forms.Form):
+    u_content = forms.CharField(label='Updating content', widget=forms.Textarea(attrs={'class': 'form-control'}))
 
 
 class UserLoginForm(AuthenticationForm):
@@ -13,9 +18,10 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserRegisterForm(UserCreationForm):
-    username = forms.CharField(label='Username',widget=forms.TextInput(attrs={'class': 'form-control'}))
-    password1 = forms.CharField(label='Password',help_text='Password must contain letters and numbers',widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    password2 = forms.CharField(label='Confirm Password',widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password1 = forms.CharField(label='Password', help_text='Password must contain letters and numbers',
+                                widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
 
     class Meta:
