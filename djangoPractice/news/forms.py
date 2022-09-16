@@ -9,7 +9,7 @@ import re
 
 
 class UpdateNewsForm(forms.Form):
-    u_content = forms.CharField(label='Updating content', widget=forms.Textarea(attrs={'class': 'form-control'}))
+    u_content = forms.CharField(label='New content', widget=forms.Textarea(attrs={'class': 'form-control'}))
 
 
 class UserLoginForm(AuthenticationForm):

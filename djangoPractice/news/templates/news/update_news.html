@@ -5,6 +5,11 @@
 {%endblock%}
 {%block content%}
 <h1>{{news.title}}</h1>
+<h5><b>Old content:</b></h5>
+<div>
+    <i>{{news.content}}</i>
+</div>
+<hr>
 <form method="post">
     {%csrf_token%}
 {{form.non_field.errors}}
